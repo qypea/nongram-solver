@@ -168,7 +168,45 @@ def check_row(inputs, state):
     return inputs == actuals
 
 
-# Generate all possible permutations of a row given the current state
+def generate_row_options(state: list):
+    """Generate all possible permutations of a row given the current state."""
+    state = state.copy()
+    try:
+        i = state.index(Square.UNKNOWN)
+    except ValueError:
+        yield state
+        return
+
+    state[i] = Square.EMPTY
+    for derived in generate_row_options(state):
+        yield derived
+    state[i] = Square.FULL
+    for derived in generate_row_options(state):
+        yield derived
+    state[i] = Square.UNKNOWN
+
+
+class TestGenerateRow(unittest.TestCase):
+    """Test the generate_row_options function."""
+    def test_generate_row_options(self):
+        """Test the generate_row_options function."""
+        cases = [
+            ([], [[]]),
+            ([0], [[1], [2]]),
+            ([1], [[1]]),
+            ([2], [[2]]),
+            ([0, 0], [[1, 1], [1, 2], [2, 1], [2, 2]]),
+            ([1, 0], [[1, 1], [1, 2]]),
+            ([0, 1], [[1, 1], [2, 1]]),
+            ]
+        for state, expected in cases:
+            with self.subTest(state=state):
+                expected.sort()
+                actual = list(generate_row_options(state))
+                actual.sort()
+                self.assertEqual(actual, expected)
+
+
 # Filter with check_row so we only have the valid ones
 # Compute probabilities
 # Fill in 0s, 1s with x, #
