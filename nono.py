@@ -207,8 +207,38 @@ class TestGenerateRow(unittest.TestCase):
                 self.assertEqual(actual, expected)
 
 
-# Filter with check_row so we only have the valid ones
-# Compute probabilities
+def row_probabilities(inputs, state):
+    """Calculate the probabilities of each square being filled in."""
+    counts = [0.0] * len(state)
+    valid = 0
+
+    for possible_state in generate_row_options(state):
+        if not check_row(inputs, possible_state):
+            continue
+
+        valid += 1
+        for i in range(len(state)):
+            if possible_state[i] == Square.FULL:
+                counts[i] += 1.0
+
+    return [x / valid for x in counts]
+
+
+class TestRowProb(unittest.TestCase):
+    """Test row probabilities function."""
+    def test_row_probabilities(self):
+        """Test row probabilities function."""
+        cases = [
+            ([], [0, 0, 0], [0, 0, 0]),
+            ([1], [0, 0, 0], [1.0/3, 1.0/3, 1.0/3]),
+            ([2], [0, 0, 0], [1.0/2, 1, 1.0/2]),
+            ([1, 1], [2, 0, 0], [1, 0, 1]),
+            ]
+        for inputs, state, expected in cases:
+            with self.subTest(inputs=inputs, state=state):
+                self.assertEqual(row_probabilities(inputs, state), expected)
+
+
 # Fill in 0s, 1s with x, #
 # Check if something changed in filling in process
 # Convert columns to rows, fill those in too
