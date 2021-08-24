@@ -98,16 +98,16 @@ def parse_row(state: list) -> list:
     """Given a state extract the inputs for that state."""
     assert Square.UNKNOWN not in state, "No empty squares allowed"
 
-    if not state:
+    if len(state) == 0:
         return []
 
     try:
-        start = state.index(Square.FULL)
+        start = list(state).index(Square.FULL)
     except ValueError:
         return []
 
     try:
-        end = state.index(Square.EMPTY, start)
+        end = list(state).index(Square.EMPTY, start)
 
         length = len(state[start:end])
         rest = state[end:]
@@ -174,7 +174,7 @@ def generate_row_options(state: list):
     """Generate all possible permutations of a row given the current state."""
     state = state.copy()
     try:
-        i = state.index(Square.UNKNOWN)
+        i = list(state).index(Square.UNKNOWN)
     except ValueError:
         yield state
         return
