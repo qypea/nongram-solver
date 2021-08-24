@@ -241,14 +241,71 @@ class TestRowProb(unittest.TestCase):
                 self.assertEqual(row_probabilities(inputs, state), expected)
 
 
-# Fill in 0s, 1s with x, #
-# Check if something changed in filling in process
-# Convert columns to rows, fill those in too
-# Loop through all rows, columns filling in things. Print state after each change
+def fill_row(inputs, state):
+    """Fill in what we can for a row."""
+    probs = row_probabilities(inputs, state)
+    changed = False
+
+    for i in range(len(probs)):
+        if state[i] == Square.UNKNOWN:
+            if probs[i] == 0:
+                state[i] = Square.EMPTY
+                changed = True
+            elif probs[i] == 1:
+                state[i] = Square.FULL
+                changed = True
+
+    return changed, state
+
+class TestFillRow(unittest.TestCase):
+    """Test the fill_row function."""
+    def test_fill_row(self):
+        """Test the fill_row function."""
+        cases = [
+            ([], [0, 0, 0], True, [1, 1, 1]),
+            ([1], [0, 0, 0], False, [0, 0, 0]),
+            ([2], [0, 0, 0], True, [0, 2, 0]),
+            ([1, 1], [2, 0, 2], True, [2, 1, 2]),
+            ]
+        for inputs, state, changed, newstate in cases:
+            with self.subTest(inputs=inputs, state=state):
+                self.assertEqual(fill_row(inputs, state), (changed, newstate))
+
+
+def rowbased_solution(non: Nonogram):
+    changed = True
+    while changed:
+        changed = False
+
+        for i in range(len(non.row_inputs)):
+            print("checking row", i)
+            inputs, row = non.row(i)
+            row_changed, _ = fill_row(inputs, row)
+            if row_changed:
+                changed = True
+                print("row", i, "changed")
+                print(non)
+                input("continue")
+
+        for i in range(len(non.col_inputs)):
+            print("checking col", i)
+            inputs, col = non.column(i)
+            col_changed, _ = fill_row(inputs, col)
+            if col_changed:
+                changed = True
+                print("col", i, "changed")
+                print(non)
+                input("continue")
 
 
 # Move to checking row+column together to get more data out
 # Guess and check recursive solution when we run out of simple steps
 
 if __name__ == "__main__":
-    unittest.main()
+    non = Nonogram(15, 15,
+        [[1,4], [10], [11], [3,9], [13], [13], [2,1,4], [13], [2,9], [2,2,2],
+            [2,2,2], [2,1,2], [2,2], [2], [2]],
+        [[2,1], [4,2], [5,2,2], [3,2,1,3], [7,3], [7,3], [6,3], [6,2], [9],
+            [6,2], [5,2,2], [8,1,1], [6,2], [7], [5]])
+    print(non)
+    rowbased_solution(non)
