@@ -15,6 +15,8 @@ class Square(enum.IntEnum):
 class Nonogram:
     """Collection of the data required to represent a nonogram."""
     def __init__(self, row_size, col_size, row_inputs, col_inputs):
+        assert row_size == len(row_inputs)
+        assert col_size == len(col_inputs)
         self.array = numpy.ndarray([row_size, col_size],
                                    dtype=numpy.ubyte,
                                    order='C')
