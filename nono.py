@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+"""Solver for nonogram/picross puzzles."""
+
 import enum
 import numpy
 import unittest
@@ -7,6 +9,7 @@ import unittest
 
 class Square(enum.IntEnum):
     """Enum for the state of a single square."""
+
     UNKNOWN = 0
     EMPTY = 1
     FULL = 2
@@ -14,7 +17,9 @@ class Square(enum.IntEnum):
 
 class Nonogram:
     """Collection of the data required to represent a nonogram."""
+
     def __init__(self, row_size, col_size, row_inputs, col_inputs):
+        """Constructor."""
         assert row_size == len(row_inputs)
         assert col_size == len(col_inputs)
         self.array = numpy.ndarray([row_size, col_size],
@@ -122,6 +127,7 @@ def parse_row(state: list) -> list:
 
 class TestParseRow(unittest.TestCase):
     """Test parse_row function."""
+
     def test_parse_row(self):
         """Test parse_row function."""
         cases = [([], []),
@@ -190,6 +196,7 @@ def generate_row_options(state: list):
 
 class TestGenerateRow(unittest.TestCase):
     """Test the generate_row_options function."""
+
     def test_generate_row_options(self):
         """Test the generate_row_options function."""
         cases = [
@@ -228,6 +235,7 @@ def row_probabilities(inputs, state):
 
 class TestRowProb(unittest.TestCase):
     """Test row probabilities function."""
+
     def test_row_probabilities(self):
         """Test row probabilities function."""
         cases = [
@@ -260,6 +268,7 @@ def fill_row(inputs, state):
 
 class TestFillRow(unittest.TestCase):
     """Test the fill_row function."""
+
     def test_fill_row(self):
         """Test the fill_row function."""
         cases = [
@@ -274,6 +283,11 @@ class TestFillRow(unittest.TestCase):
 
 
 def rowbased_solution(non: Nonogram):
+    """Solve the puzzle using row-based(or column-based) probabilities.
+
+    Look at a row, calculate probability of squares being filled or empty,
+    fill those that are 100% or 0%, repeat.
+    """
     changed = True
     while changed:
         changed = False
