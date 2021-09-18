@@ -3,8 +3,9 @@
 """Solver for nonogram/picross puzzles."""
 
 import enum
-import numpy
 import unittest
+
+import numpy
 
 
 class Square(enum.IntEnum):
