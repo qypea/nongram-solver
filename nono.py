@@ -315,9 +315,6 @@ def rowbased_solution(non: Nonogram):
                 input("continue")
 
 
-# Move to checking row+column together to get more data out
-# Guess and check recursive solution when we run out of simple steps
-
 if __name__ == "__main__":
     NON = Nonogram(15, 15,
                    [[1, 4], [10], [11], [3, 9], [13], [13], [2, 1, 4], [13], [2, 9], [2, 2, 2],
