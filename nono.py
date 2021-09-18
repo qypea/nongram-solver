@@ -319,10 +319,10 @@ def rowbased_solution(non: Nonogram):
 # Guess and check recursive solution when we run out of simple steps
 
 if __name__ == "__main__":
-    non = Nonogram(15, 15,
+    NON = Nonogram(15, 15,
                    [[1, 4], [10], [11], [3, 9], [13], [13], [2, 1, 4], [13], [2, 9], [2, 2, 2],
                     [2, 2, 2], [2, 1, 2], [2, 2], [2], [2]],
                    [[2, 1], [4, 2], [5, 2, 2], [3, 2, 1, 3], [7, 3], [7, 3], [6, 3], [6, 2], [9],
                     [6, 2], [5, 2, 2], [8, 1, 1], [6, 2], [7], [5]])
-    print(non)
-    rowbased_solution(non)
+    print(NON)
+    rowbased_solution(NON)
