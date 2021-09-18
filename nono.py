@@ -84,7 +84,7 @@ class Nonogram:
                 elif item == Square.FULL:
                     ret += "#"
                 else:
-                    raise InvalidValue("Unexpected square value to print")
+                    raise RuntimeError("Unexpected square value to print")
                 ret += "  "
             ret += "\n"
 
