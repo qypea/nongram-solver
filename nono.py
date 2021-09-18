@@ -91,7 +91,7 @@ class Nonogram:
 
     def column(self, i):
         """Return the column i."""
-        return self.col_inputs[i], self.array[:,i]
+        return self.col_inputs[i], self.array[:, i]
 
 
 def parse_row(state: list) -> list:
@@ -158,7 +158,7 @@ class TestParseRow(unittest.TestCase):
                  ([2, 1, 2, 2], [1, 2]),
                  ([1, 2, 2, 2], [3]),
                  ([2, 2, 2, 2], [4]),
-                ]
+                 ]
         for state, expected_input in cases:
             with self.subTest(state=state):
                 self.assertEqual(parse_row(state), expected_input)
@@ -200,7 +200,7 @@ class TestGenerateRow(unittest.TestCase):
             ([0, 0], [[1, 1], [1, 2], [2, 1], [2, 2]]),
             ([1, 0], [[1, 1], [1, 2]]),
             ([0, 1], [[1, 1], [2, 1]]),
-            ]
+        ]
         for state, expected in cases:
             with self.subTest(state=state):
                 expected.sort()
@@ -232,10 +232,10 @@ class TestRowProb(unittest.TestCase):
         """Test row probabilities function."""
         cases = [
             ([], [0, 0, 0], [0, 0, 0]),
-            ([1], [0, 0, 0], [1.0/3, 1.0/3, 1.0/3]),
-            ([2], [0, 0, 0], [1.0/2, 1, 1.0/2]),
+            ([1], [0, 0, 0], [1.0 / 3, 1.0 / 3, 1.0 / 3]),
+            ([2], [0, 0, 0], [1.0 / 2, 1, 1.0 / 2]),
             ([1, 1], [2, 0, 0], [1, 0, 1]),
-            ]
+        ]
         for inputs, state, expected in cases:
             with self.subTest(inputs=inputs, state=state):
                 self.assertEqual(row_probabilities(inputs, state), expected)
@@ -257,6 +257,7 @@ def fill_row(inputs, state):
 
     return changed, state
 
+
 class TestFillRow(unittest.TestCase):
     """Test the fill_row function."""
     def test_fill_row(self):
@@ -266,7 +267,7 @@ class TestFillRow(unittest.TestCase):
             ([1], [0, 0, 0], False, [0, 0, 0]),
             ([2], [0, 0, 0], True, [0, 2, 0]),
             ([1, 1], [2, 0, 2], True, [2, 1, 2]),
-            ]
+        ]
         for inputs, state, changed, newstate in cases:
             with self.subTest(inputs=inputs, state=state):
                 self.assertEqual(fill_row(inputs, state), (changed, newstate))
@@ -303,9 +304,9 @@ def rowbased_solution(non: Nonogram):
 
 if __name__ == "__main__":
     non = Nonogram(15, 15,
-        [[1,4], [10], [11], [3,9], [13], [13], [2,1,4], [13], [2,9], [2,2,2],
-            [2,2,2], [2,1,2], [2,2], [2], [2]],
-        [[2,1], [4,2], [5,2,2], [3,2,1,3], [7,3], [7,3], [6,3], [6,2], [9],
-            [6,2], [5,2,2], [8,1,1], [6,2], [7], [5]])
+                   [[1, 4], [10], [11], [3, 9], [13], [13], [2, 1, 4], [13], [2, 9], [2, 2, 2],
+                    [2, 2, 2], [2, 1, 2], [2, 2], [2], [2]],
+                   [[2, 1], [4, 2], [5, 2, 2], [3, 2, 1, 3], [7, 3], [7, 3], [6, 3], [6, 2], [9],
+                    [6, 2], [5, 2, 2], [8, 1, 1], [6, 2], [7], [5]])
     print(non)
     rowbased_solution(non)
